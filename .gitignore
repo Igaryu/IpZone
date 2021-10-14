@@ -3,4 +3,5 @@ include
 lib
 Raccolta\ Copie\ Precedenti/
 *bak
+*.7z
 ??-pure.iptables
