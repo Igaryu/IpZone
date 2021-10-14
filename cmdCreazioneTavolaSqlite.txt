@@ -1,0 +1,4 @@
+CREATE TABLE "ip" (`ipInd` INTEGER NOT NULL UNIQUE, `ISOcode` INTEGER, `NetBloc` TEXT, `ISOandIP` TEXT,	PRIMARY KEY(ipInd,ISOcode,NetBloc,ISOandIP));
+
+
+a='CREATE TABLE "ip" (`ipInd` INTEGER NOT NULL UNIQUE, `ISOcode` INTEGER, `NetBloc` TEXT, `ISOandIP` TEXT, PRIMARY KEY(ipInd,ISOcode,NetBloc,ISOandIP));'

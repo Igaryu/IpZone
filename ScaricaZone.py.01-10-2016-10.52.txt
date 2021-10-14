@@ -1,0 +1,12 @@
+Versione 2.0
+Versione definitiva con:
+	1. Crazione dir temporanea
+	2. salvataggio cartella corrente
+	3. scarico file zone totali gzippato
+	4. decompresione di tutti i file zone
+	5. avvio ciclo per tutti i file zona
+		6. avvio ciclo per singolo file zona
+		7.   appendi in database riga corrente NetBloc
+	8. chiusura file
+
+

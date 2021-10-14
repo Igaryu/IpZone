@@ -1,0 +1,64 @@
+#!/usr/bin/python 
+# -*- coding: utf-8 -*-
+
+import os, tempfile, shutil, wget, sqlite3
+os.system("clear")
+oldDir=os.getcwd()
+
+zone_in_file = open("zone.list","r")
+ISOlst = zone_in_file.readlines()
+
+tmpDir = tempfile.mkdtemp(suffix='', prefix='JoeDir')
+shutil.copy("IpZoneVuoto.db",tmpDir+"/IpZone.db")
+os.chdir(tmpDir)
+tmpFile= open("FileTemporaneo.txt","w+")
+
+print("\n\nScarico file totale zone: attendere un attimo ...") 
+url = 'http://www.ipdeny.com/ipblocks/data/countries/all-zones.tar.gz'
+gzFile = wget.download(url)
+gzFile=tmpDir+"/"+gzFile
+cmdName='/bin/tar xzf ' + gzFile
+print("\n\nDecomprimo file zone...")
+os.system(cmdName)
+
+
+isoTotZone=open("IsoTotFile.zone","w") 				#create or open IsoTotFile.zone
+
+db = sqlite3.connect('IpZone.db')
+cursor = db.cursor()
+
+
+				
+for iso in range(0,len(ISOlst)):
+	ISOlst[iso]=ISOlst[iso][:2]
+wipInd=0				
+for iso in range(0,len(ISOlst)):						#ciclo esterno
+#	os.system("clear")
+	print("file in elaborazione: "+ISOlst[iso])
+
+	isofile = open(ISOlst[iso][:2]+".zone","r")
+	tmpISOlst=isofile.readlines()
+#	wipInd=0
+	wISOcode=""
+	wNetBloc=""
+	wISOandIP=""
+	for k in range (0,len(tmpISOlst)):					#ciclo interno
+		isoTotZone.write(ISOlst[iso] +" "+ tmpISOlst[k])
+		wipInd=wipInd + 1
+		wISOcode=ISOlst[iso]
+		wNetBloc=tmpISOlst[k]
+		wISOandIP=ISOlst[iso] +" - "+tmpISOlst[k]
+		cursor.execute('''INSERT INTO ip(ipInd, ISOcode, NetBloc, ISOandIP) VALUES(?,?,?,?)''', (wipInd, wISOcode, wNetBloc, wISOandIP))
+		
+		
+	db.commit()
+
+zone_in_file.close() 
+tmpFile.close()
+isoTotZone.close()
+
+raw_input("Premi un tasto per cancellare tutto e chiudere!!")
+db.close()
+shutil.copy("IpZone.db",oldDir+"/IpZone.db")
+os.chdir(oldDir)
+shutil.rmtree(tmpDir, ignore_errors=True)
