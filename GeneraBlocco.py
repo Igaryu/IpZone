@@ -16,7 +16,7 @@ for iso in range(0,len(ISOlst)):
 Nazione=""
 
 while (Nazione not in ISOlst) and Nazione!="zz":
-	Nazione=input("Che nazione vuoi bloccare? [zz per uscire altrimenti codie ISO come it per italia] ")
+	Nazione=input("Che nazione vuoi bloccare? [zz per uscire altrimenti codie ISO come it per italia] ").lower()
 	
 if Nazione=="zz": exit()
 
@@ -27,19 +27,19 @@ os.system("clear")
 db = sqlite3.connect('IpZone.db')
 cursor = db.cursor()
 sqlCmd="select NetBloc from ip where ISOcode='"+Nazione+"';"
-input("Codice Nazione= "+Nazione+".")
+#input("Codice Nazione= "+Nazione+".")
 
 RigheEstratte=cursor.execute(sqlCmd)
 k=0
 rulesFileIPT= open(Nazione+"-pure.iptables","w+")
 rulesFileIPT.write("*filter\n:Block-"+Nazione.upper()+" - [0:0]\n\n")
 
-print ("Genero file ufw ed iptables; con paesi con alto numero di Netbloc può volerci qulche secondo. Attendere prego \n") 
+input("Genero file ufw ed iptables; con paesi con alto numero di Netbloc può volerci qualche secondo.\nPremere [ INVIO ] per avviare... \n") 
 for riga in RigheEstratte:
 #	print riga[0]
-	cmdIptalbesIPT="-A Block-"+Nazione.upper()+" -s "+ riga[0] + " -j DROP\n"
+	cmdIptalbesIPT="-A Block-"+Nazione.upper()+" -s "+ riga[0].strip('\n') + " -j DROP\n"
 	rulesFileIPT.write(cmdIptalbesIPT)
-	print(".", end=' ')
+	print(".", end='')
 	k=k+1
 
 # Concludi file per iptables restore

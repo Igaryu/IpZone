@@ -45,8 +45,9 @@ tmpFile= open("FileTemporaneo.txt","w+")
 
 print("\n\nScarico file totale zone: attendere un attimo ...") 
 url = 'http://www.ipdeny.com/ipblocks/data/countries/all-zones.tar.gz'
-gzFile = wget.download(url)
-gzFile=tmpDir+"/"+gzFile
+#gzFile = wget.download(url)
+gzFile ='/Users/giuseppecurto/MEGA/Lavoro/Python/IpZone/all-zones.tar.gz'
+#gzFile=tmpDir+"/"+gzFile
 if OS=="Darwin":
     cmdName='/usr/bin/tar xzf ' + gzFile
 elif OS=="Linux":
